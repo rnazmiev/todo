@@ -1,6 +1,6 @@
 <template>
   <q-page class="bg-grey-3 column todo-wrapper">
-    <div class="row q-pa-sm bg-primary">
+    <div class="row q-pa-sm bg-primary input-row">
       <q-input
         v-model="newTask"
         @keyup.enter="addTask"
@@ -38,7 +38,7 @@
         <q-item-section avatar>
           <q-checkbox
             v-model="task.done"
-            class="no-pointer-events"
+            class="no-pointer-events todo-checkbox"
             color="primary" />
         </q-item-section>
         <q-item-section>
@@ -50,6 +50,7 @@
           <q-btn
             @click.stop="deleteTask(index)"
             flat
+            class="todo-delete-icon"
             round
             dense
             color="primary"
@@ -60,13 +61,15 @@
     <div
       v-if="!tasks.length"
       class="no-tasks absolute-center">
-      <q-icon
+      <!-- <q-icon
         name="check"
         size="100px"
-        color="primary"/>
+        color="primary"/> -->
       <div class="text-h5 text-primary text-center">
-        Нет задач
+        Какие нибудь задачи из личной жизни
       </div>
+      <span class="w-50">Оплатить коммунальные платежи, спланировать семейную поездку,
+        посмотреть кино...все дела в жизни можно вспомнить здесь</span>
     </div>
   </q-page>
 </template>
@@ -165,9 +168,12 @@ export default defineComponent({
 
 <style lang="scss">
 .todo-wrapper {
+  .input-row {
+    z-index: 9;
+  }
   .q-list {
     overflow-y: auto;
-    height: calc(100vh - 241px);
+    height: calc(100vh - 201px);
     .todo-item {
       border-top: none !important;
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
@@ -175,11 +181,22 @@ export default defineComponent({
     .q-item {
       .q-checkbox__bg {
         border-radius: 50%;
+        // color: #006CFF !important;
         .q-checkbox__svg {
           left: 10%;
           width: 80% !important;
         }
       }
+      // .text-primary {
+      //   .q-checkbox__bg {
+      //     color: #006CFF !important;
+      //   }
+      // }
+      // .todo-delete-icon {
+      //   i {
+      //     color: #006CFF;
+      //   }
+      // }
     }
     .done {
       .q-item__label {
@@ -200,6 +217,12 @@ export default defineComponent({
   }
   .no-tasks {
     opacity: .5;
+    text-align: center;
+    width: 70%;
+    span {
+      display: block;
+      margin-top: 20px;
+    }
   }
 } 
 </style>

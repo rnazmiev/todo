@@ -1,6 +1,6 @@
 <template>
-  <q-page class="bg-grey-3 column">
-    <div class="row q-pa-sm bg-primary">
+  <q-page class="bg-grey-3 column worklist-wrapper">
+    <div class="row q-pa-sm bg-primary input-row">
       <q-input
         v-model="newTask"
         @keyup.enter="addTask"
@@ -59,13 +59,14 @@
     <div
       v-if="!tasks.length"
       class="no-tasks absolute-center">
-      <q-icon
+      <!-- <q-icon
         name="check"
         size="100px"
-        color="primary"/>
+        color="primary"/> -->
       <div class="text-h5 text-primary text-center">
-        Нет задач
+        Задачи по работе
       </div>
+      <span class="w-50">Создать новый проект, встреча с директором...все рабочие дела можно вспомнить здесь</span>
     </div>
   </q-page>
 </template>
@@ -124,13 +125,15 @@ export default defineComponent({
       this.addToLocalStorage()
     },
     addTask() {
-      this.tasks.push({
-        title: this.newTask,
-        important: 'v2',
-        done: false
-      })
-      this.newTask = ''
-      this.addToLocalStorage()
+      if (this.newTask) {
+        this.tasks.push({
+          title: this.newTask,
+          important: 'v2',
+          done: false
+        })
+        this.newTask = ''
+        this.addToLocalStorage()
+      }
     },
     addToLocalStorage() {
       const parsed = JSON.stringify(this.tasks);
@@ -142,9 +145,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.worklist-wrapper {
+  .input-row {
+    z-index: 9;
+  }
+}
   .q-list {
     overflow-y: auto;
-    height: calc(100vh - 241px);
+    height: calc(100vh - 201px);
     .todo-item {
       border-top: none !important;
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
@@ -168,6 +176,15 @@ export default defineComponent({
       .q-checkbox__inner {
         color: #F45E6D;
       }
+    }
+  }
+  .no-tasks {
+    opacity: .5;
+    text-align: center;
+    width: 70%;
+    span {
+      display: block;
+      margin-top: 20px;
     }
   }
 </style>
