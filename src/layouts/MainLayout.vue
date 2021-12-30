@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" class="todo-layout">
     <q-header>
       <q-toolbar>
         <q-btn
@@ -15,9 +15,9 @@
         <div class="text-h3">{{ title }}</div>
         <div class="text-subtitle">{{ todaysDate }}</div>
       </div>
-      <q-img
+      <!-- <q-img
         src="~assets/bg.jpg"
-        class="header-image absolute-top"/>
+        class="header-image absolute-top"/> -->
     </q-header>
 
     <q-drawer
@@ -159,15 +159,23 @@ export default defineComponent({
 })
 </script>
 
-<style>
-  .header-image {
-    height: 100%;
-    z-index: -2;
-    opacity: .2;
-    filter: grayscale(100%);
+<style lang="scss">
+.todo-layout {
+  .q-header {
+    background-color: #57419d !important;
   }
-  .list-wrapper {
-    height: calc(100% - 185px);
-    /* border-right: 1px solid #ddd */
-  }
+    .header-image {
+      height: 100%;
+      z-index: -2;
+      opacity: .2;
+      filter: grayscale(100%);
+    }
+    .list-wrapper {
+      height: calc(100% - 185px);
+      /* border-right: 1px solid #ddd */
+    }
+    /* .q-drawer-bg {
+      background-image: url('~assets/bg3.jpg');
+    } */
+}
 </style>
