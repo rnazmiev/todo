@@ -21,7 +21,7 @@
       </q-input>
     </div>
     <q-list
-      class="list-wrapper"
+      class="bg-white"
       separator
       bordered>
       <q-item
@@ -168,7 +168,7 @@ export default defineComponent({
 
 <style lang="scss">
 .todo-wrapper {
-  background: #57419D;
+  background: #4f7fd5;
   .input-row {
     z-index: 9;
     .q-field {

@@ -15,9 +15,9 @@
         <div class="text-h3">{{ title }}</div>
         <div class="text-subtitle">{{ todaysDate }}</div>
       </div>
-      <!-- <q-img
+      <q-img
         src="~assets/bg.jpg"
-        class="header-image absolute-top"/> -->
+        class="header-image absolute-top"/>
     </q-header>
 
     <q-drawer
@@ -162,7 +162,7 @@ export default defineComponent({
 <style lang="scss">
 .todo-layout {
   .q-header {
-    background-color: #57419d !important;
+    background-color: #4f7fd5 !important;
   }
     .header-image {
       height: 100%;
@@ -174,8 +174,8 @@ export default defineComponent({
       height: calc(100% - 185px);
       /* border-right: 1px solid #ddd */
     }
-    /* .q-drawer-bg {
-      background-image: url('~assets/bg3.jpg');
-    } */
+    .q-drawer-bg {
+      background-image: url('~assets/bg2.png');
+    }
 }
 </style>

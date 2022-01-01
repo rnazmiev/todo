@@ -1,11 +1,11 @@
 <template>
-  <q-page class="bg-grey-3 column worklist-wrapper">
-    <div class="row q-pa-sm bg-primary input-row">
+  <q-page class="column worklist-wrapper">
+    <div class="row q-pa-sm input-row">
       <q-input
         v-model="newTask"
         @keyup.enter="addTask"
         class="col"
-        bg-color="white"
+        autofocus="true"
         square
         filled 
         placeholder="Добавить задачу"
@@ -146,16 +146,29 @@ export default defineComponent({
 
 <style lang="scss">
 .worklist-wrapper {
+  background: #4f7fd5;
   .input-row {
     z-index: 9;
+    .q-field {
+      background: #F5F5FA;
+      border-radius: 8px;
+      &:focus {
+        background: #F5F5FA;
+      }
+    }
   }
-}
   .q-list {
+    background: #F5F5FA !important;
     overflow-y: auto;
     height: calc(100vh - 201px);
+    border-radius: 24px 24px 0px 0px;
+    padding: 0px 10px;
     .todo-item {
+      background: #F5F5FA;
+      box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.5), 5px 5px 10px rgba(170, 170, 204, 0.25), 10px 10px 20px rgba(170, 170, 204, 0.5), -10px -10px 20px #FFFFFF;
+      border-radius: 16px;
       border-top: none !important;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      margin-top: 20px;
     }
     .q-item {
       .q-checkbox__bg {
@@ -178,6 +191,7 @@ export default defineComponent({
       }
     }
   }
+}
   .no-tasks {
     opacity: .5;
     text-align: center;
