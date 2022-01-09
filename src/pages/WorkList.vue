@@ -25,7 +25,7 @@
       separator
       bordered>
       <q-item
-        v-for="(task,index) in tasks"
+        v-for="(task,index) in sorteredItems"
         :key="index"
         @click="doneTask(task,index)"
         clickable
@@ -42,6 +42,7 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ task.title }}</q-item-label>
+          <span class="date">{{ showDate(task.date) }}</span>
         </q-item-section>
         <q-item-section
           v-if="task.done"
@@ -72,13 +73,19 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useQuasar } from 'quasar'
 
 export default defineComponent({
   setup () {
     const $q = useQuasar()
+    const tasks = ref([])
+    const sorteredItems = ref([])
+    const newTask = ref('')
     return {
+      tasks,
+      newTask,
+      sorteredItems,
       deleteTask(index) {
         $q.dialog({
           title: 'Подтверждение',
@@ -92,30 +99,35 @@ export default defineComponent({
           cancel: true,
           persistent: true
         }).onOk(() => {
-          this.tasks.splice(index, 1);
-          this.addToLocalStorage();
+          this.sorteredItems.splice(index, 1)
+          this.tasks = this.sorteredItems
+          this.addToLocalStorage()
+          this.sorteredFunction()
           $q.notify('Задача удалена')
         })
       }
-    }
-  },
-  data() {
-    return {
-      newTask: '',
-      tasks: [],
     }
   },
   beforeMount() {
     if (localStorage.getItem('jobList')) {
       try {
         this.tasks = JSON.parse(localStorage.getItem('jobList'))
-        console.log('moun', this.storeList)
       } catch(e) {
         localStorage.removeItem('jobList');
       }
     }
+    this.sorteredFunction()
   },
   methods: {
+    sorteredFunction() {
+      const sortArray = [...this.tasks].sort((a,b) => {
+        if(a.date > b.date) return -1
+        if(a.date < b.date) return 1
+        // return a.id - b.id
+      })
+      this.sorteredItems = sortArray
+      // console.log(sortArray)
+    },
     doneTask(task,index) {
       task.done = !task.done
       const localTodo = localStorage.getItem('jobList')
@@ -129,16 +141,24 @@ export default defineComponent({
         this.tasks.push({
           title: this.newTask,
           important: 'v2',
-          done: false
+          done: false,
+          date: new Date()
         })
         this.newTask = ''
+        this.sorteredFunction()
         this.addToLocalStorage()
       }
     },
     addToLocalStorage() {
-      const parsed = JSON.stringify(this.tasks);
+      const parsed = JSON.stringify(this.sorteredItems);
       localStorage.setItem('jobList', parsed);
-    }
+    },
+    showDate (createdAt) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      const date = new Date(createdAt)
+      const formattedDate = date.toLocaleDateString("ru", options)
+      return formattedDate
+    },
   },
   
 })
@@ -160,7 +180,7 @@ export default defineComponent({
   .q-list {
     background: #F5F5FA !important;
     overflow-y: auto;
-    height: calc(100vh - 201px);
+    height: calc(100vh - 183px);
     border-radius: 24px 24px 0px 0px;
     padding: 0px 10px;
     .todo-item {
@@ -169,6 +189,10 @@ export default defineComponent({
       border-radius: 16px;
       border-top: none !important;
       margin-top: 20px;
+      .date {
+        font-size: 11px;
+        opacity: .5;
+      }
     }
     .q-item {
       .q-checkbox__bg {

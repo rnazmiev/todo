@@ -12,7 +12,14 @@
         />
       </q-toolbar>
       <div class="q-px-lg q-pt-sm q-mb-md">
-        <div class="text-h3">{{ title }}</div>
+        <div
+          class="title-wrap"
+          :class="{
+            'home' : $route.fullPath == '/',
+            'work' : $route.fullPath == '/work'
+          }">
+          <span class="text-h5">{{ title }}</span>
+        </div>
         <div class="text-subtitle">{{ todaysDate }}</div>
       </div>
       <q-img
@@ -27,7 +34,7 @@
         :breakpoint="600"
         class="q-drawer-bg"
       >
-        <q-scroll-area class="list-wrapper">
+        <q-scroll-area class="list-wrapper" style="height: calc(100% - 120px); margin-top: 120px; border-right: 1px solid #ddd">
           <q-list padding>
             <q-item
               to="/"
@@ -37,7 +44,7 @@
               v-ripple>
               <q-item-section avatar>
                 <q-icon
-                  color="green"
+                  color="green-13"
                   name="home" />
               </q-item-section>
               <q-item-section>
@@ -53,15 +60,56 @@
               v-ripple>
               <q-item-section avatar>
                 <q-icon
-                  color="red"
+                  color="red-13"
                   name="work" />
               </q-item-section>
               <q-item-section>
                 Работа
               </q-item-section>
             </q-item>
+
+            <q-item
+              class="about-item"
+              to="/about"
+              exact
+              @click="updateTitle('О программе')"
+              clickable
+              v-ripple>
+              <q-item-section avatar>
+                <q-icon
+                  color="blue-13"
+                  name="info" />
+              </q-item-section>
+              <q-item-section>
+                О программе
+              </q-item-section>
+            </q-item>
+
+            <q-item
+              to="/policy"
+              exact
+              @click="updateTitle('Политика конфиденциальности')"
+              clickable
+              v-ripple>
+              <q-item-section avatar>
+                <q-icon
+                  color="grey"
+                  name="policy" />
+              </q-item-section>
+              <q-item-section>
+                Политика конфиденциальности
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-scroll-area>
+        <q-img class="absolute-top sidebar-img" src="~assets/material.png" style="height: 120px">
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm">
+              <img src="~assets/logo.png">
+            </q-avatar>
+            <div class="text-weight-bold">Список задач</div>
+          </div>
+        </q-img>
       </q-drawer>
 
     <q-page-container>
@@ -121,39 +169,57 @@ const linksList = [
 ];
 
 import { defineComponent, ref } from 'vue'
-import { date } from 'quasar'
 
 export default defineComponent({
   name: 'MainLayout',
-
-  components: {
-    // EssentialLink
-  },
-  data () {
+  data() {
     return {
-      title: 'Личные'
+      title: ''
     }
   },
   setup () {
     const leftDrawerOpen = ref(false)
-
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
   },
+  mounted() {
+    this.changeTitle()
+  },
   computed: {
     todaysDate() {
-      const timeStamp = Date.now()
-      return  date.formatDate(timeStamp, 'dddd D MMMM')
+      const options = {weekday: 'long', month: 'long', day: 'numeric' }
+      const date = new Date(Date.now())
+      return  date.toLocaleDateString("ru", options)
+    }
+  },
+  watch: {
+    '$route.params': function () {
+      this.changeTitle()
     }
   },
   methods: {
     updateTitle (label) {
       this.title = label
+    },
+    changeTitle () {
+      switch (this.$route.fullPath) {
+        case '/' :
+          this.title = 'Личные'
+          break
+        case '/work' :
+          this.title = 'Работа'
+          break
+        case '/about' :
+          this.title = 'О программе'
+          break
+        case '/policy' :
+          this.title = 'Политика конфиденциальности'
+          break
+      }
     }
   }
 })
@@ -163,6 +229,33 @@ export default defineComponent({
 .todo-layout {
   .q-header {
     background-color: #4f7fd5 !important;
+    .text-subtitle {
+      opacity: .5;
+    }
+    .title-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .home {
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: #63dea5;
+        bottom: 0;
+      }
+    }
+    .work {
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: #F45E6D;
+        bottom: 0;
+      }
+    }
   }
     .header-image {
       height: 100%;
@@ -176,6 +269,22 @@ export default defineComponent({
     }
     .q-drawer-bg {
       background-image: url('~assets/bg2.png');
+    }
+    .about-item {
+      border-top: 1px solid #ccc;
+      margin-top: 100%;
+    }
+    .sidebar-img {
+      background: #4f7fd5;
+      .q-img__image {
+        opacity: .1;
+      }
+    }
+    .q-item__section {
+      line-height: normal;
+    }
+    .q-item__section--avatar {
+      min-width: 32px;
     }
 }
 </style>
