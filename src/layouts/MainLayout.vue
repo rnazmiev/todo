@@ -12,12 +12,14 @@
         />
       </q-toolbar>
       <div class="q-px-lg q-pt-sm q-mb-md">
-        <div
+        <!-- <div
           class="title-wrap"
           :class="{
             'home' : $route.fullPath == '/',
             'work' : $route.fullPath == '/work'
-          }">
+          }"
+          > -->
+        <div class="title-wrap">
           <span class="text-h5">{{ title }}</span>
         </div>
         <div class="text-subtitle">{{ todaysDate }}</div>

@@ -142,7 +142,7 @@ export default defineComponent({
           title: this.newTask,
           important: 'v2',
           done: false,
-          date: new Date()
+          date: Date.now()
         })
         this.newTask = ''
         this.sorteredFunction()
@@ -165,20 +165,26 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.q-field--filled .q-field__control {
+  background: rgba(0, 0, 0, 0.0);
+}
+.q-field--filled .q-field__control:before {
+  content: none !important;
+}
 .worklist-wrapper {
   background: #4f7fd5;
   .input-row {
     z-index: 9;
     .q-field {
-      background: #F5F5FA;
+      background: #fff;
       border-radius: 8px;
       &:focus {
-        background: #F5F5FA;
+        background: #fff;
       }
     }
   }
   .q-list {
-    background: #F5F5FA !important;
+    background: #fff !important;
     overflow-y: auto;
     height: calc(100vh - 183px);
     border-radius: 24px 24px 0px 0px;

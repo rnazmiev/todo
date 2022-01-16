@@ -124,13 +124,14 @@ export default defineComponent({
   },
   methods: {
     sorteredFunction() {
+      console.log(this.tasks)
       const sortArray = [...this.tasks].sort((a,b) => {
         if(a.date > b.date) return -1
         if(a.date < b.date) return 1
         // return a.id - b.id
       })
       this.sorteredItems = sortArray
-      // console.log(sortArray)
+      console.log(sortArray)
     },
     doneTask(task,index) {
       task.done = !task.done
@@ -146,7 +147,7 @@ export default defineComponent({
           title: this.newTask,
           important: 'v1',
           done: false,
-          date: new Date()
+          date: Date.now()
         })
         this.newTask = ''
         this.sorteredFunction()
@@ -168,15 +169,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.q-field--filled .q-field__control {
+  background: rgba(0, 0, 0, 0.0);
+}
+.q-field--filled .q-field__control:before {
+  content: none !important;
+}
 .todo-wrapper {
   background: #4f7fd5;
   .input-row {
     z-index: 9;
     .q-field {
-      background: #F5F5FA;
+      background: #fff;
       border-radius: 8px;
       &:focus {
-        background: #F5F5FA;
+        background: #fff;
       }
     }
   }
